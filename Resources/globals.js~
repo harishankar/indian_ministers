@@ -1,0 +1,4 @@
+var Globals = {
+    appTitle: "Animals",
+    barColor: "#333333"
+};
