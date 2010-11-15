@@ -62,7 +62,7 @@ function getStates() {
 				});
 				//Ti.API.info("currentWindow: " + w);
 				//w.open(win,{animated:true});
-				Titanium.UI.currentWindow.open(win,{animated:true});
+				win.open({animated:true});
 			});
 		/*}
 		catch(E){

@@ -1,3 +1,5 @@
+Titanium.include('globals.js');
+
 function getMinistersOfState() {
   var data = [];
 	
@@ -28,9 +30,9 @@ function getMinistersOfState() {
 
   var xhr = Ti.Network.createHTTPClient();
   xhr.timeout = 1000000;	
-	var url = "http://api.myminister.info/states/" + selectedStateId + "mps.json";
+	var url = "http://api.myminister.info/states/" + selectedStateId + "/mps.json";
   xhr.open("GET",url);
-  Ti.API.info("Sending the request");
+  Ti.API.info("Sending the request" + url);
   xhr.onload = function()
   {
 		//try
@@ -45,7 +47,7 @@ function getMinistersOfState() {
 				var party = mps[i].party.name;
 				Ti.API.info("name: " + mpName + " constituency: " + constituency + " party: " + party);
 				
-				data.push({title:mpName+" (" + constituency + " - " + party + ")", hasChild:true, stateid:stateId});
+				data.push({title:mpName+" (" + constituency + " - " + party + ")", hasChild:true, stateid:selectedStateId});
 
 			}
 			var tableView = Titanium.UI.createTableView({data:data,minRowHeight:58});
