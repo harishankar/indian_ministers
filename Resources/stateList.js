@@ -1,5 +1,3 @@
-Titanium.include('globals.js');
-
 function getStates() {
   var data = [];
 	
@@ -55,13 +53,12 @@ function getStates() {
 			
 			tableView.addEventListener('click', function(e) {
 				Ti.API.info("e: " + e.rowData.stateid);
-				selectedStateId = e.rowData.stateid;
+				Titanium.App.Properties.setString("selectedStateId", e.rowData.stateid);
 				win = Titanium.UI.createWindow({
 					url:'state.js',
-					title:e.rowData.title
+					title:e.rowData.title,
+					fullscreen: false
 				});
-				//Ti.API.info("currentWindow: " + w);
-				//w.open(win,{animated:true});
 				win.open({animated:true});
 			});
 		/*}
