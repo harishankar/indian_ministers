@@ -29,42 +29,30 @@ function getStates() {
   var xhr = Ti.Network.createHTTPClient();
   xhr.timeout = 1000000;	
   xhr.open("GET","http://api.myminister.info/states.json");
-  Ti.API.info("Sending the request");
   xhr.onload = function()
   {
-		//try
-		//{
-			var states = JSON.parse(this.responseText);
-			Ti.API.info("type of model: " + typeof(states.model));
-			states = JSON.parse(states.model);
-      Ti.API.info("Looping thru the data " + states.length);
-			for(var i=0; i < states.length; i++) {
-				var stateName = states[i].name;
-				var noOfMps = states[i].no_of_mps;
-				var stateId = states[i].id;
-				Ti.API.info("state: " + stateName + " no of mps: " + noOfMps + " id: " + stateId);
-				
-				data.push({title:stateName+" (" + noOfMps + ")", hasChild:true, stateid:stateId});
-
-			}
-			var tableView = Titanium.UI.createTableView({data:data,minRowHeight:58});
+		var states = JSON.parse(this.responseText);
+		states = JSON.parse(states.model);
+		for(var i=0; i < states.length; i++) {
+			var stateName = states[i].name;
+			var noOfMps = states[i].no_of_mps;
+			var stateId = states[i].id;
 			
-			Ti.UI.currentWindow.add(tableView);
-			
-			tableView.addEventListener('click', function(e) {
-				Ti.API.info("e: " + e.rowData.stateid);
-				Titanium.App.Properties.setString("selectedStateId", e.rowData.stateid);
-				win = Titanium.UI.createWindow({
-					url:'state.js',
-					title:e.rowData.title,
-					fullscreen: false
-				});
-				win.open({animated:true});
+			data.push({title:stateName+" (" + noOfMps + ")", hasChild:true, stateid:stateId});
+		}
+		var tableView = Titanium.UI.createTableView({data:data,minRowHeight:58});
+		
+		Ti.UI.currentWindow.add(tableView);
+		
+		tableView.addEventListener('click', function(e) {
+			Titanium.App.Properties.setString("selectedStateId", e.rowData.stateid);
+			win = Titanium.UI.createWindow({
+				url:'state.js',
+				title:e.rowData.title,
+				fullscreen: false
 			});
-		/*}
-		catch(E){
-			alert(E);
-		}*/
+			win.open({animated:true});
+		});
 	};
 	xhr.send();	
 }

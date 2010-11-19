@@ -30,43 +30,32 @@ function getMinistersOfState() {
   xhr.timeout = 1000000;	
 	var url = "http://api.myminister.info/states/" + Titanium.App.Properties.getString("selectedStateId") + "/mps.json";
   xhr.open("GET",url);
-  Ti.API.info("Sending the request" + url);
   xhr.onload = function()
   {
-		//try
-		//{
-			var mps = JSON.parse(this.responseText);
-			Ti.API.info("type of model: " + typeof(mps.model));
-			mps = JSON.parse(mps.model);
-      Ti.API.info("Looping thru the data " + mps.length);
-			for(var i=0; i < mps.length; i++) {
-				var mpName = mps[i].name;
-				var constituency = mps[i].constituency.name;
-				var party = mps[i].party.name;
-				var mpId = mps[i].id
-				Ti.API.info("name: " + mpName + " constituency: " + constituency + " party: " + party);
-				
-				data.push({title:mpName+" (" + constituency + " - " + party + ")", hasChild:true, mpId:mpId, mpName:mpName});
-
-			}
-			var tableView = Titanium.UI.createTableView({data:data,minRowHeight:58});
-			var w = Ti.UI.currentWindow;
-			Ti.UI.currentWindow.add(tableView);
+		var mps = JSON.parse(this.responseText);
+		mps = JSON.parse(mps.model);
+		for(var i=0; i < mps.length; i++) {
+			var mpName = mps[i].name;
+			var constituency = mps[i].constituency.name;
+			var party = mps[i].party.name;
+			var mpId = mps[i].id
 			
-			tableView.addEventListener('click', function(e) {
-				Ti.API.info("mpId: " + e.rowData.mpId);
-				Titanium.App.Properties.setString("selectedMpId", e.rowData.mpId);
-				win = Titanium.UI.createWindow({
-					url:'mp.js',
-					title:e.rowData.mpName,
-					fullscreen: false
-				});
-				win.open({animated:true});
+			data.push({title:mpName+" (" + constituency + " - " + party + ")", hasChild:true, mpId:mpId, mpName:mpName});
+
+		}
+		var tableView = Titanium.UI.createTableView({data:data,minRowHeight:58});
+		var w = Ti.UI.currentWindow;
+		Ti.UI.currentWindow.add(tableView);
+		
+		tableView.addEventListener('click', function(e) {
+			Titanium.App.Properties.setString("selectedMpId", e.rowData.mpId);
+			win = Titanium.UI.createWindow({
+				url:'mp.js',
+				title:e.rowData.mpName,
+				fullscreen: false
 			});
-		/*}
-		catch(E){
-			alert(E);
-		}*/
+			win.open({animated:true});
+		});
 	};
 	xhr.send();	
 }

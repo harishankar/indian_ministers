@@ -10,7 +10,6 @@ function getMinisterInfo() {
   xhr.timeout = 1000000;	
 	var url = "http://api.myminister.info/mps/" + Titanium.App.Properties.getString("selectedMpId") + ".json";
   xhr.open("GET",url);
-  Ti.API.info("Sending the request" + url);
   xhr.onload = function()
   {
 		var mp = JSON.parse(this.responseText);
@@ -22,8 +21,6 @@ function getMinisterInfo() {
 		var presentAddress = mp.mp_profile.present_address;
 		var email = mp.mp_profile.email;
 		var photo = mp.mp_profile.photo;
-
-		Ti.API.info("name: " + mName + " constituency: " + constituency + " party: " + party + " email: " + email + " present address: " + presentAddress);
 
 		var mpPhoto = Titanium.UI.createImageView({url:photo, left:0, top:20});
 		controlsView.add(mpPhoto);		 
